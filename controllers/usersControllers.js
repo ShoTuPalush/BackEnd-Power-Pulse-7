@@ -1,8 +1,7 @@
-const HttpError = require('../helpers/HttpError');
-const controllerWrapper = require('../helpers/controllerWrapper');
+const controllerWrapper = require('../helpers/controllerWrapper.js');
 
 const registerUser = async (req, res) => {
   res.json({ ok: true });
 };
 
-module.exports = controllerWrapper(registerUser);
+module.exports = { registerUser: controllerWrapper(registerUser) };
