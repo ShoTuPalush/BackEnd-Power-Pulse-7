@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const usersRouters = require('./routes/userRoutes');
+const usersRouter = require('./routes/userRouter');
 const diaryRoutes = require('./routes/diaryRouts');
 
 dotenv.config();
@@ -15,7 +15,7 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/users', usersRouters);
+app.use('/api/users', usersRouter);
 app.use('/api/diary', diaryRoutes);
 
 app.use((_, res) => {
