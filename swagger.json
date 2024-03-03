@@ -1,0 +1,47 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Power-pulse-7",
+    "description": "Showing off swagger-ui-express",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json", "multipart/form-data"],
+  "servers": [
+    { "url": "http://localhost:3000" },
+    { "url": "https://backend-power-pulse-7.onrender.com" }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Exercises",
+      "description": "Exercises endpoints"
+    },
+    {
+      "name": "Diary",
+      "description": "Diary endpoints"
+    },
+    {
+      "name": "Products",
+      "description": "Products endpoints"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "schemas": {}
+  },
+  "securitySchemes": {
+    "Bearer": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "JWT"
+    }
+  }
+}
