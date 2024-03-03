@@ -1,11 +1,11 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const dairySchema = new Schema(
   {
     owner: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'user',
+      ref: "user",
     },
     date: {
       type: Date,
@@ -28,7 +28,7 @@ const dairySchema = new Schema(
         productId: {
           type: Schema.Types.ObjectId,
           required: true,
-          ref: 'product',
+          ref: "product",
         },
         amount: {
           type: Number,
@@ -45,7 +45,7 @@ const dairySchema = new Schema(
         exerciseId: {
           type: Schema.Types.ObjectId,
           required: true,
-          ref: 'exercise',
+          ref: "exercise",
         },
         time: {
           type: Number,
@@ -60,7 +60,5 @@ const dairySchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
-
-const Dairies = model('dairy', dairySchema);
-
-module.exports = Dairies;
+const Diaries = model("dairy", dairySchema);
+module.exports = Diaries;
