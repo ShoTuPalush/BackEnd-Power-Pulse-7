@@ -246,22 +246,21 @@ const googleredirect = async (req, res) => {
     const verificationToken = v4();
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(userData.data.id, salt);
-    const result = await Users.create({
+    await Users.create({
       name: userData.data.name,
       email: userData.data.email,
       password: hashedPassword,
       verificationToken,
       verify: true,
     });
-    res.redirect(`${frontURL}/?email=${result.email}&name=${result.name}`);
   }
-  if (user) {
-    const tokens = await updateTokens(user._id);
-    await Users.findByIdAndUpdate(user._id, { token: tokens.accessToken });
-    res.redirect(
-      `${frontURL}/?accesstoken=${tokens.accessToken}&refreshtoken=${tokens.refreshToken}`
-    );
-  }
+  const user1 = await Users.findOne({ email: userData.data.email });
+  const tokens = await updateTokens(user1._id);
+  await Users.findByIdAndUpdate(user1._id, { token: tokens.accessToken });
+  res.redirect(
+    `${frontURL}/?accesstoken=${tokens.accessToken}&refreshtoken=${tokens.refreshToken}`
+  );
+
   res.redirect(`${frontURL}/`);
 };
 
