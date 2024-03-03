@@ -32,9 +32,14 @@ const bodyUserRefreshSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
+const bodyUserValidateTwoSchema = Joi.object({
+  email: Joi.string().pattern(new RegExp(emailRegex)).required(),
+});
+
 module.exports = {
   bodyUserLoginSchema,
   bodyUserRegisterSchema,
   bodyUserUpdateSchema,
   bodyUserRefreshSchema,
+  bodyUserValidateTwoSchema,
 };

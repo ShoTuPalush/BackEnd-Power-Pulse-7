@@ -6,6 +6,7 @@ const {
   bodyUserLoginSchema,
   bodyUserUpdateSchema,
   bodyUserRefreshSchema,
+  bodyUserValidateTwoSchema,
 } = require('../schemas/usersSchema');
 const authMiddlewares = require('../middlewares/authMiddlewares');
 const upload = require('../middlewares/updateAvatarMiddlewares');
@@ -43,5 +44,17 @@ usersRouter.post(
   validateBody(bodyUserRefreshSchema),
   ctrl.refreshToken
 );
+
+usersRouter.get('/verify/:verificationToken', ctrl.verifyUser);
+
+usersRouter.post(
+  '/verifyAgain',
+  validateBody(bodyUserValidateTwoSchema),
+  ctrl.verifyUserTwo
+);
+
+usersRouter.get('/googleAuth', ctrl.googleauth);
+
+usersRouter.get('/googleredirect', ctrl.googleredirect);
 
 module.exports = usersRouter;

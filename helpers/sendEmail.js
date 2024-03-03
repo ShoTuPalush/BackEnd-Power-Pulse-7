@@ -4,13 +4,13 @@ const dotenv = require('dotenv');
 dotenv.config();
 const { PASSWORD_META } = process.env;
 
-export const sendEmail = async ({ to, subject, html, text = '' }) => {
+const sendEmail = async ({ to, subject, html, text = '' }) => {
   const config = {
     host: 'smtp.meta.ua',
     port: 465,
     secure: true,
     auth: {
-      user: 'nodejsgoittest@meta.ua',
+      user: 'powerpulse7goit@meta.ua',
       pass: PASSWORD_META,
     },
   };
@@ -18,7 +18,7 @@ export const sendEmail = async ({ to, subject, html, text = '' }) => {
   const transporter = nodemailer.createTransport(config);
 
   const email = {
-    from: 'nodejsgoittest@meta.ua',
+    from: 'powerpulse7goit@meta.ua',
     to,
     subject,
     html,
@@ -27,3 +27,5 @@ export const sendEmail = async ({ to, subject, html, text = '' }) => {
 
   await transporter.sendMail(email);
 };
+
+module.exports = sendEmail;
