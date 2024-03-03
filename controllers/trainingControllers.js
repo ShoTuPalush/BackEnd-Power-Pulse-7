@@ -8,7 +8,18 @@ const getCategory = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
-  const result = await Exercises.find();
+  const { bodyPart, equipment, target } = req.query;
+  let filters = {};
+  if (bodyPart) {
+    filters.bodyPart = bodyPart;
+  }
+  if (equipment) {
+    filters.equipment = equipment;
+  }
+  if (target) {
+    filters.target = target;
+  }
+  const result = await Exercises.find(filters).exec();
   return res.json(result);
 };
 
