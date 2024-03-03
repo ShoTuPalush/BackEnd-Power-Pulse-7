@@ -60,7 +60,5 @@ const dairySchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
-
 const Diaries = model("dairy", dairySchema);
-
 module.exports = Diaries;
