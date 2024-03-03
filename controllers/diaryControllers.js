@@ -1,7 +1,7 @@
-const controllerWrapper = require("../helpers/controllerWrapper");
-const Diaries = require("../models/diaries");
-const Exercises = require("../models/exercises");
-const Products = require("../models/products");
+const controllerWrapper = require('../helpers/controllerWrapper');
+const Diaries = require('../models/diaries');
+const Exercises = require('../models/exercises');
+const Products = require('../models/products');
 
 const checkUser = async (user, date) => {
   let foundedDiary;
@@ -23,7 +23,7 @@ const addDiaryProduct = async (req, res) => {
   await Products.findOne();
   const { user } = req;
   const { date, productId, calories, amount } = req.body;
-  const foundedDiary = checkUser(user, date);
+  const foundedDiary = await checkUser(user, date);
   const data = await Diaries.findByIdAndUpdate(
     foundedDiary,
     {
@@ -33,12 +33,12 @@ const addDiaryProduct = async (req, res) => {
     { new: true }
   )
     .populate(
-      "exercises.exerciseId",
-      "equipment bodyPart gifUrl name target burnedCalories time"
+      'exercises.exerciseId',
+      'equipment bodyPart gifUrl name target burnedCalories time'
     )
     .populate(
-      "products.productId",
-      "category weight calories title groupBloodNotAllowed"
+      'products.productId',
+      'category weight calories title groupBloodNotAllowed'
     );
   res.json({ data });
 };
@@ -48,7 +48,7 @@ const addDiaryExercisest = async (req, res) => {
   await Products.findOne();
   const { user } = req;
   const { date, exerciseId, calories, time } = req.body;
-  const foundedDiary = checkUser(user, date);
+  const foundedDiary = await checkUser(user, date);
   const data = await Diaries.findByIdAndUpdate(
     foundedDiary,
     {
@@ -58,12 +58,12 @@ const addDiaryExercisest = async (req, res) => {
     { new: true }
   )
     .populate(
-      "exercises.exerciseId",
-      "equipment bodyPart gifUrl name target burnedCalories time"
+      'exercises.exerciseId',
+      'equipment bodyPart gifUrl name target burnedCalories time'
     )
     .populate(
-      "products.productId",
-      "category weight calories title groupBloodNotAllowed"
+      'products.productId',
+      'category weight calories title groupBloodNotAllowed'
     );
   res.json({ data });
 };
@@ -73,7 +73,7 @@ const delDiaryExercisest = async (req, res) => {
   await Products.findOne();
   const { user } = req;
   const { date, exerciseId, calories, time } = req.body;
-  const foundedDiary = checkUser(user, date);
+  const foundedDiary = await checkUser(user, date);
 
   const data = await Diaries.findByIdAndUpdate(
     foundedDiary,
@@ -84,12 +84,12 @@ const delDiaryExercisest = async (req, res) => {
     { new: true }
   )
     .populate(
-      "exercises.exerciseId",
-      "equipment bodyPart gifUrl name target burnedCalories time"
+      'exercises.exerciseId',
+      'equipment bodyPart gifUrl name target burnedCalories time'
     )
     .populate(
-      "products.productId",
-      "category weight calories title groupBloodNotAllowed"
+      'products.productId',
+      'category weight calories title groupBloodNotAllowed'
     );
   res.json({ data });
 };
@@ -99,7 +99,7 @@ const delDiaryProduct = async (req, res) => {
   await Products.findOne();
   const { user } = req;
   const { date, productId, calories } = req.body;
-  const foundedDiary = checkUser(user, date);
+  const foundedDiary = await checkUser(user, date);
 
   const data = await Diaries.findByIdAndUpdate(
     foundedDiary,
@@ -110,12 +110,12 @@ const delDiaryProduct = async (req, res) => {
     { new: true }
   )
     .populate(
-      "exercises.exerciseId",
-      "equipment bodyPart gifUrl name target burnedCalories time"
+      'exercises.exerciseId',
+      'equipment bodyPart gifUrl name target burnedCalories time'
     )
     .populate(
-      "products.productId",
-      "category weight calories title groupBloodNotAllowed"
+      'products.productId',
+      'category weight calories title groupBloodNotAllowed'
     );
 
   res.json({ data });
@@ -126,16 +126,16 @@ const getAlldiary = async (req, res) => {
   await Products.findOne();
   const { user } = req;
   const { date } = req.body;
-  const foundedDiary = checkUser(user, date);
+  const foundedDiary = await checkUser(user, date);
 
   const data = await Diaries.findById(foundedDiary)
     .populate(
-      "exercises.exerciseId",
-      "equipment bodyPart gifUrl name target burnedCalories time"
+      'exercises.exerciseId',
+      'equipment bodyPart gifUrl name target burnedCalories time'
     )
     .populate(
-      "products.productId",
-      "category weight calories title groupBloodNotAllowed"
+      'products.productId',
+      'category weight calories title groupBloodNotAllowed'
     );
   res.json({ data });
 };

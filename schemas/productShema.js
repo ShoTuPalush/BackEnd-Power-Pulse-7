@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi');
 
 const exerciseSchema = Joi.object({
   date: Joi.date().required(),
@@ -17,4 +17,4 @@ const AlldayShema = Joi.object({
   date: Joi.date().required(),
 });
 
-module.exports = (exerciseSchema, productSchema, AlldayShema);
+module.exports = { exerciseSchema, productSchema, AlldayShema };
