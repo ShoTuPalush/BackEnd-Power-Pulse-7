@@ -8,6 +8,8 @@ const swaggerDocument = require('./swagger.json');
 const usersRouter = require('./routes/userRouter');
 const diaryRoutes = require('./routes/diaryRouts');
 const trainingRoutes = require('./routes/trainingRoutes');
+const productsRoutes = require("./routes/productsRoutes");
+
 
 dotenv.config();
 const { DB_HOST } = process.env;
@@ -18,10 +20,12 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/users', usersRouter);
-app.use('/api/diary', diaryRoutes);
-app.use('/api/exercises', trainingRoutes);
+app.use("/api/users", usersRouter);
+app.use("/api/diary", diaryRoutes);
+app.use("/api/exercises", trainingRoutes);
+app.use("/api/products", productsRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });
