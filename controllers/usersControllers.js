@@ -80,7 +80,7 @@ const logOutUser = async (req, res) => {
   const { user } = req;
   if (user) {
     await Users.findByIdAndUpdate(user._id, { token: '' });
-    res.status(204).json();
+    res.status(204).json({ message: 'logout was successfull' });
   } else {
     throw HttpError(401, 'Not authorized');
   }
