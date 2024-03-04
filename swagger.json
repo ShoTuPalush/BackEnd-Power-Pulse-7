@@ -288,18 +288,19 @@
         }
       }
     },
-    "/api/users/verifyAgain": {
+    "/api/users/refresh": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Verify email (send virification email)",
+        "summary": "Update access token",
         "paramrters": [],
+        "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Verification email object",
+          "description": "Refresh token",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyEmailRequest"
+                "$ref": "#/components/schemas/refreshRequest"
               }
             }
           }
@@ -310,7 +311,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/VerifyEmailResponse"
+                  "$ref": "#/components/schemas/refreshResponse"
                 }
               }
             }
@@ -338,18 +339,18 @@
         }
       }
     },
-    "/api/users/refresh": {
+    "/api/users/verifyAgain": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Update access token",
+        "summary": "Verify email (send virification email)",
         "paramrters": [],
         "requestBody": {
-          "description": "Refresh token",
+          "description": "Verification email object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/refreshRequest"
+                "$ref": "#/components/schemas/VerifyEmailRequest"
               }
             }
           }
@@ -360,7 +361,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/refreshResponse"
+                  "$ref": "#/components/schemas/VerifyEmailResponse"
                 }
               }
             }
@@ -820,13 +821,14 @@
           }
         }
       }
-    }
-  },
-  "securitySchemes": {
-    "Bearer": {
-      "type": "http",
-      "scheme": "bearer",
-      "bearerFormat": "JWT"
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Use token (or refreshToken for refreshing)"
+      }
     }
   }
 }
