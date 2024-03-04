@@ -21,7 +21,7 @@ usersRouter.post(
 
 usersRouter.post('/login', validateBody(bodyUserLoginSchema), ctrl.loginUser);
 
-usersRouter.get('/logout', authMiddlewares, ctrl.logOutUser);
+usersRouter.post('/logout', authMiddlewares, ctrl.logOutUser);
 
 usersRouter.get('/current', authMiddlewares, ctrl.currentUser);
 

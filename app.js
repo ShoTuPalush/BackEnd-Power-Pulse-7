@@ -3,6 +3,8 @@ const morgan = require("morgan");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 const usersRouter = require("./routes/userRouter");
 const diaryRoutes = require("./routes/diaryRouts");
 const trainingRoutes = require("./routes/trainingRoutes");
@@ -21,6 +23,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/diary", diaryRoutes);
 app.use("/api/exercises", trainingRoutes);
 app.use("/api/products", productsRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
