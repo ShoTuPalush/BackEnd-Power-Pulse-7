@@ -8,6 +8,8 @@ const getCategory = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (page - 1) * limit;
   const { bodyPart, equipment, target } = req.query;
   let filters = {};
   if (bodyPart) {
@@ -19,7 +21,7 @@ const getAll = async (req, res) => {
   if (target) {
     filters.target = target;
   }
-  const result = await Exercises.find(filters).limit(20).exec();
+  const result = await Exercises.find(filters, " ", { skip, limit }).exec();
   return res.json(result);
 };
 
