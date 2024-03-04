@@ -25,7 +25,7 @@ const getAll = async (req, res) => {
       }
     }
   }
-  const result = await Products.find(filters).limit(6).exec();
+  const result = await Products.find(filters).limit(20).exec();
   return res.json(result);
 };
 

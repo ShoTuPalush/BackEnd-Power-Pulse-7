@@ -19,7 +19,7 @@ const getAll = async (req, res) => {
   if (target) {
     filters.target = target;
   }
-  const result = await Exercises.find(filters).exec();
+  const result = await Exercises.find(filters).limit(20).exec();
   return res.json(result);
 };
 
