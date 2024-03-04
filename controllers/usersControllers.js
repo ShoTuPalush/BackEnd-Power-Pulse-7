@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const { v4 } = require('uuid');
 const { URL } = require('url');
-const cloudinary = require('cloudinary').v2;
 const querystring = require('node:querystring');
 const Users = require('../models/users');
 const Tokens = require('../models/tokens');
@@ -20,12 +19,6 @@ const { JWT_SECRET, FRONTEND_URL, BACKEND_URL, CLIENT_ID, CLIENT_SECRET } =
   process.env;
 const frontURL = FRONTEND_URL || 'http://localhost:3000';
 const backURL = BACKEND_URL || 'http://localhost:3000';
-
-cloudinary.config({
-  cloud_name: 'dxqzi4x9j',
-  api_key: 417617877398435,
-  api_secret: 'fYS2XkZOZeQb3Ra7a3eS91zkHQ4',
-});
 
 const registerUser = async (req, res) => {
   const { email, password, name } = req.body;
