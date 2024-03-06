@@ -18,7 +18,7 @@ const sendEmail = async ({ to, subject, html, text = '' }) => {
   const transporter = nodemailer.createTransport(config);
 
   const email = {
-    from: 'powerpulse7goit@meta.ua',
+    from: 'power-pulse-7@meta.ua',
     to,
     subject,
     html,
