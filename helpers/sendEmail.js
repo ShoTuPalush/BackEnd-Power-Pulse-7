@@ -10,7 +10,7 @@ const sendEmail = async ({ to, subject, html, text = '' }) => {
     port: 465,
     secure: true,
     auth: {
-      user: 'powerpulse7goit@meta.ua',
+      user: 'power-pulse-7@meta.ua',
       pass: PASSWORD_META,
     },
   };
