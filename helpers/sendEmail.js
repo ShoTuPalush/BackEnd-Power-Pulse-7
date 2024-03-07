@@ -10,7 +10,7 @@ const sendEmail = async ({ to, subject, html, text = '' }) => {
     port: 465,
     secure: true,
     auth: {
-      user: 'powerpulse7goit@meta.ua',
+      user: 'power-pulse-7@meta.ua',
       pass: PASSWORD_META,
     },
   };
@@ -18,7 +18,7 @@ const sendEmail = async ({ to, subject, html, text = '' }) => {
   const transporter = nodemailer.createTransport(config);
 
   const email = {
-    from: 'powerpulse7goit@meta.ua',
+    from: 'power-pulse-7@meta.ua',
     to,
     subject,
     html,
