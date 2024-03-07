@@ -38,8 +38,27 @@ const registerUser = async (req, res) => {
       subject: 'Please confirm your email',
       html: generateVerifyMessage(verificationToken),
     });
-    res.status(201).json({ email: result.email, name: result.name });
+
+    const tokens = await updateTokens(result._id);
+    const user1 = await Users.findByIdAndUpdate(
+      result._id,
+      { token: tokens.accessToken },
+      {
+        password: 0,
+        createdAt: 0,
+        updatedAt: 0,
+        token: 0,
+        verificationToken: 0,
+      }
+    );
+    res.status(201).json({
+      tokens,
+      user: user1,
+    });
   } catch (error) {
+    if (error.code === 'EAUTH') {
+      throw HttpError(409, 'Email in use!');
+    }
     if (error.code === 11000) {
       throw HttpError(409, 'Email in use!');
     }
@@ -98,7 +117,6 @@ const currentUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { user } = req;
   const body = req.body;
-  console.log(user);
   if (user) {
     const user1 = await Users.findByIdAndUpdate(user._id, body, { new: true });
     const { height, currentWeight, birthday, sex, levelActivity } = user1;
@@ -232,7 +250,6 @@ const googleredirect = async (req, res) => {
       Authorization: `Bearer ${tokenData.data.access_token}`,
     },
   });
-  console.log(userData.picture);
   const user = await Users.findOne({ email: userData.data.email });
   if (!user) {
     const verificationToken = v4();
@@ -244,6 +261,7 @@ const googleredirect = async (req, res) => {
       password: hashedPassword,
       verificationToken,
       verify: true,
+      avatarUrl: userData.data.picture,
     });
   }
   const user1 = await Users.findOne({ email: userData.data.email });
@@ -255,8 +273,6 @@ const googleredirect = async (req, res) => {
   res.redirect(
     `${frontURL}/?accesstoken=${tokens.accessToken}&refreshtoken=${tokens.refreshToken}`
   );
-
-  res.redirect(`${frontURL}/`);
 };
 
 module.exports = {
