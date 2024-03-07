@@ -33,11 +33,11 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       verificationToken,
     });
-    sendEmail({
-      to: email,
-      subject: 'Please confirm your email',
-      html: generateVerifyMessage(verificationToken),
-    });
+    // sendEmail({
+    //   to: email,
+    //   subject: 'Please confirm your email',
+    //   html: generateVerifyMessage(verificationToken),
+    // });
 
     const tokens = await updateTokens(result._id);
     const user1 = await Users.findByIdAndUpdate(
