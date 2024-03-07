@@ -24,7 +24,6 @@ app.use('/api/diary', diaryRoutes);
 app.use('/api/exercises', trainingRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use;
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });
