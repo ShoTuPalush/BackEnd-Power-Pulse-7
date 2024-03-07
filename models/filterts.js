@@ -11,6 +11,7 @@ const filtersSchema = new Schema(
     imgURL: {
       type: String,
     },
+    imgURL2x: { type: String },
   },
   { versionKey: false, timestamps: true }
 );

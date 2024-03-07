@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
   );
   res.status(200).json({
     tokens,
-    users: user1,
+    user: user1,
   });
 };
 
@@ -204,7 +204,6 @@ const googleauth = async (req, res) => {
     access_type: 'offline',
     prompt: 'consent',
   });
-  console.log(`${backURL}/api/users/googleredirect`);
   res.redirect(
     `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`
   );
@@ -233,7 +232,7 @@ const googleredirect = async (req, res) => {
       Authorization: `Bearer ${tokenData.data.access_token}`,
     },
   });
-
+  console.log(userData.picture);
   const user = await Users.findOne({ email: userData.data.email });
   if (!user) {
     const verificationToken = v4();
@@ -249,7 +248,10 @@ const googleredirect = async (req, res) => {
   }
   const user1 = await Users.findOne({ email: userData.data.email });
   const tokens = await updateTokens(user1._id);
-  await Users.findByIdAndUpdate(user1._id, { token: tokens.accessToken });
+  await Users.findByIdAndUpdate(user1._id, {
+    token: tokens.accessToken,
+    verify: true,
+  });
   res.redirect(
     `${frontURL}/?accesstoken=${tokens.accessToken}&refreshtoken=${tokens.refreshToken}`
   );
