@@ -9,6 +9,7 @@ const usersRouter = require('./routes/userRouter');
 const diaryRoutes = require('./routes/diaryRouts');
 const trainingRoutes = require('./routes/trainingRoutes');
 const productsRoutes = require('./routes/productsRoutes');
+const statisticsRouter = require('./routes/statisticsRouter');
 
 dotenv.config();
 const { DB_HOST } = process.env;
@@ -23,6 +24,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/diary', diaryRoutes);
 app.use('/api/exercises', trainingRoutes);
 app.use('/api/products', productsRoutes);
+app.use('/api/statistics', statisticsRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((_, res) => {
