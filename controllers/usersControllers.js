@@ -45,7 +45,6 @@ const registerUser = async (req, res) => {
       { token: tokens.accessToken },
       {
         password: 0,
-        createdAt: 0,
         updatedAt: 0,
         token: 0,
         verificationToken: 0,
@@ -80,7 +79,7 @@ const loginUser = async (req, res) => {
   await Users.findByIdAndUpdate(user._id, { token: tokens.accessToken });
   const user1 = await Users.findOne(
     { email },
-    { password: 0, createdAt: 0, updatedAt: 0, token: 0, verificationToken: 0 }
+    { password: 0, updatedAt: 0, token: 0, verificationToken: 0 }
   );
   res.status(200).json({
     tokens,
@@ -103,7 +102,6 @@ const currentUser = async (req, res) => {
   if (user) {
     const user1 = await Users.findById(user._id, {
       password: 0,
-      createdAt: 0,
       updatedAt: 0,
       token: 0,
       verificationToken: 0,
@@ -134,7 +132,6 @@ const updateUser = async (req, res) => {
     );
     const user3 = await Users.findById(user2._id, {
       password: 0,
-      createdAt: 0,
       updatedAt: 0,
       token: 0,
       verificationToken: 0,
