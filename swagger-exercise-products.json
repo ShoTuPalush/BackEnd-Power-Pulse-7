@@ -1,0 +1,371 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Power-pulse-7",
+    "description": "Showing off swagger-ui-express",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json", "multipart/form-data"],
+  "servers": [
+    { "url": "http://localhost:3000" },
+    { "url": "https://backend-power-pulse-7.onrender.com" }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Exercises",
+      "description": "Exercises endpoints"
+    },
+    {
+      "name": "Diary",
+      "description": "Diary endpoints"
+    },
+    {
+      "name": "Products",
+      "description": "Products endpoints"
+    }
+  ],
+  "paths": {
+    "/api/exercises": {
+      "get": {
+        "tags": ["Exercises"],
+        "summary": "List of exercises categories",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Exercises object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExercisesCategory"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SucsessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/exercises/all": {
+      "get": {
+        "tags": ["Exercises"],
+        "summary": "List of all filtered exercises",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Exercises object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExercisesAll"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SucsessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "List of products categories",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Products object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductsCategory"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SucsessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/all": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "List of all filtered products",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Products object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductsAll"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SucsessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExercisesCategory": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "filter": {
+              "type": "string",
+              "description": "Category name"
+            },
+            "name": {
+              "type": "string",
+              "description": "Name"
+            },
+            "imgURL": {
+              "type": "string",
+              "description": "Image url"
+            },
+            "imgURL2x": {
+              "type": "string",
+              "description": "Image url 2x"
+            }
+          }
+        },
+        "example": [
+          {
+            "filter": "Body parts",
+            "name": "cardio",
+            "imgURL": "https://res.cloudinary.com/dxqzi4x9j/image/upload/v1709588074/filters/1x/lg9vw5odzicgrlwwmnwc.jpg",
+            "imgURL2x": "https://res.cloudinary.com/dxqzi4x9j/image/upload/v1709588096/filters/2x/alc7r8p81eaajesnk55u.jpg"
+          }
+        ]
+      },
+      "ExercisesAll": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "bodyPart": {
+              "type": "string",
+              "description": "Bodypart name"
+            },
+            "equipment": {
+              "type": "string",
+              "description": "equipment name"
+            },
+            "gifUrl": {
+              "type": "string",
+              "description": "GIF url"
+            },
+            "name": {
+              "type": "string",
+              "description": "Exercise name"
+            },
+            "target": {
+              "type": "string",
+              "description": "Muscle name"
+            },
+            "burnedCalories": {
+              "type": "number",
+              "description": "Number of burned calories"
+            },
+            "time": {
+              "type": "number",
+              "description": "Exercise time"
+            }
+          }
+        },
+        "example": [
+          {
+            "bodyPart": "upper arms",
+            "equipment": "barbell",
+            "gifUrl": "https://ftp.goit.study/img/power-pulse/gifs/0038.gif",
+            "name": "barbell drag curl",
+            "target": "biceps",
+            "burnedCalories": 84,
+            "time": 3
+          }
+        ]
+      },
+      "ProductsCategory": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Category name"
+            }
+          }
+        },
+        "example": [
+          {
+            "filter": "berries"
+          }
+        ]
+      },
+      "ProductsAll": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "weight": {
+              "type": "number",
+              "description": "Weight"
+            },
+            "calories": {
+              "type": "number",
+              "description": "Calories"
+            },
+            "category": {
+              "type": "string",
+              "description": "Category name"
+            },
+            "title": {
+              "type": "string",
+              "description": "Name"
+            },
+            "groupBloodNotAllowed": {
+              "type": "object",
+              "properties": {
+                "1": "boolean",
+                "2": "boolean",
+                "3": "boolean",
+                "4": "boolean"
+              }
+            }
+          }
+        },
+        "example": [
+          {
+            "weight": 100,
+            "calories": 17,
+            "category": "vegetables and herbs",
+            "title": "Salads Belaya Dacha Delicate root",
+            "groupBloodNotAllowed": {
+              "1": false,
+              "2": false,
+              "3": false,
+              "4": false
+            }
+          }
+        ]
+      },
+      "SucsessResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message",
+            "example": "successfull"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
