@@ -875,39 +875,31 @@
           }
         }
       },
-      "UserStatistics": {
+      "TotalStatistics": {
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "string",
-            "description": "User ID"
-          },
-          "trainingTime": {
-            "type": "integer",
-            "description": "Training time in minutes"
-          },
-          "steps": {
-            "type": "integer",
-            "description": "Number of steps"
-          },
-          "caloriesBurned": {
-            "type": "number",
-            "description": "Number of burned calories"
-          }
-        },
-        "required": ["userId", "trainingTime", "steps", "caloriesBurned"]
-      }
+            "totalExerciseVideos": {
+                "type": "integer",
+                "description": "Total number of exercise videos in the application"
+            },
+            "totalBurnedCalories": {
+                "type": "number",
+                "description": "Total number of calories burned by all registered users"
+            },
+            "totalUsers": {
+                "type": "integer",
+                "description": "Total number of registered users in the application"
+            },
+            "totalTrainingHours": {
+                "type": "number",
+                "description": "Total number of training hours completed by registered users"
+            },
+            "totalWorkoutsCompleted": {
+                "type": "integer",
+                "description": "Total number of workouts completed by registered users"
+            }
+        }
     },
-    "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "Error message"
-          }
-        },
-        "required": ["message"]
-      },  
       "securitySchemes": {
         "Bearer": {
           "type": "http",
@@ -917,5 +909,6 @@
         }
       }
     }
+  }
   
   
