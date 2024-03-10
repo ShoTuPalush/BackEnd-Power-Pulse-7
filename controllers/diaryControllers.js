@@ -4,15 +4,18 @@ const Exercises = require('../models/exercises');
 const Products = require('../models/products');
 
 const checkUser = async (user, date) => {
+  const newDate = new Date(new Date(date).setHours(2, 0, 0, 0));
   let foundedDiary;
-
   const userDiary = await Diaries.findOne({
     owner: user._id,
-    date,
+    date: newDate,
   });
   foundedDiary = userDiary?._id;
   if (!userDiary) {
-    const creatUserDiary = await Diaries.create({ owner: user._id, date });
+    const creatUserDiary = await Diaries.create({
+      owner: user._id,
+      date: newDate,
+    });
     foundedDiary = creatUserDiary?._id;
   }
   return foundedDiary;
