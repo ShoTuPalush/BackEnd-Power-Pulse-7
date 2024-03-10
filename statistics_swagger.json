@@ -1,0 +1,914 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Power-pulse-7",
+      "description": "Showing off swagger-ui-express",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "consumes": ["application/json", "multipart/form-data"],
+    "produces": ["application/json", "multipart/form-data"],
+    "servers": [
+      { "url": "http://localhost:3000" },
+      { "url": "https://backend-power-pulse-7.onrender.com" }
+    ],
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Authorization endpoints"
+      },
+      {
+        "name": "Exercises",
+        "description": "Exercises endpoints"
+      },
+      {
+        "name": "Diary",
+        "description": "Diary endpoints"
+      },
+      {
+        "name": "Products",
+        "description": "Products endpoints"
+      },
+      {
+        "name": "Statistics",
+        "description": "Endpoints for retrieving user statistics"
+      }
+    ],
+    "paths": {
+      "/api/users/register": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User registration",
+          "paramrters": [],
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Email in use",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/login": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User login",
+          "paramrters": [],
+          "requestBody": {
+            "description": "Login object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/current": {
+        "get": {
+          "tags": ["Auth"],
+          "summary": "Current user",
+          "paramrters": [],
+          "security": [{ "Bearer": [] }],
+          "requestBody": {},
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CurrentResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/logout": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User logout",
+          "paramrters": [],
+          "security": [{ "Bearer": [] }],
+  
+          "responses": {
+            "204": {
+              "description": "No Content",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LogoutResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/update": {
+        "put": {
+          "tags": ["Auth"],
+          "summary": "Update user",
+          "paramrters": [],
+          "security": [{ "Bearer": [] }],
+          "requestBody": {
+            "description": "Update object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/updateRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/updateResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Email in use",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/updateAvatar": {
+        "patch": {
+          "tags": ["Auth"],
+          "summary": "Update user avatar",
+          "paramrters": [],
+          "security": [{ "Bearer": [] }],
+          "requestBody": {
+            "description": "Update avatar object",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarsRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AvatarsResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/refresh": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "Update access token",
+          "paramrters": [],
+          "security": [{ "Bearer": [] }],
+          "requestBody": {
+            "description": "Refresh token",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/refreshRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/refreshResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/verifyAgain": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "Verify email (send virification email)",
+          "paramrters": [],
+          "requestBody": {
+            "description": "Verification email object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyEmailRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VerifyEmailResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/verify/{:verificationToken}": {
+        "get": {
+          "tags": ["Auth"],
+          "summary": "Verify email with a verification token",
+          "parameters": [
+            {
+              "in": "path",
+              "name": ":verificationToken",
+              "required": true,
+              "type": "string",
+              "description": "Verification token"
+            }
+          ],
+          "requestBody": {},
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VerifyEmailResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/googleAuth": {
+        "get": {
+          "tags": ["Auth"],
+          "summary": "Authorization User",
+          "requestBody": {},
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/statistics": {
+        "get": {
+            "tags": ["Statistics"],
+            "summary": "Get user statistics",
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "userId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": "ID of the user to fetch statistics for"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserStatistics"
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Unauthorized",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Not Found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+      "schemas": {
+        "RegistrationRequest": {
+          "type": "object",
+          "required": ["name", "email", "password"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "User name"
+            },
+            "email": {
+              "type": "string",
+              "description": "User email",
+              "format": "email"
+            },
+            "password": {
+              "type": "string",
+              "description": "User password",
+              "example": "qwe123"
+            }
+          }
+        },
+        "RegistrationResponse": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "User name"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "User email"
+                }
+              }
+            },
+            "message": {
+              "type": "string",
+              "descroption": "Message"
+            }
+          }
+        },
+        "LoginRequest": {
+          "type": "object",
+          "required": ["email", "password"],
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User email",
+              "format": "email"
+            },
+            "password": {
+              "type": "string",
+              "description": "User password",
+              "example": "qwe123"
+            }
+          }
+        },
+        "updateRequest": {
+          "type": "object",
+          "required": [
+            "name",
+            "height",
+            "currentWeight",
+            "desiredWeight",
+            "birthday",
+            "blood",
+            "levelActivity",
+            "sex"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "User name"
+            },
+            "height": {
+              "type": "number",
+              "description": "User height"
+            },
+            "currentWeight": {
+              "type": "number",
+              "description": "User currentWeight"
+            },
+            "desiredWeight": {
+              "type": "number",
+              "description": "User desiredWeight"
+            },
+            "birthday": {
+              "type": "Date",
+              "description": "User birthday"
+            },
+            "blood": {
+              "type": "number",
+              "description": "User blood"
+            },
+            "sex": {
+              "type": "string",
+              "description": "User sex"
+            },
+            "levelActivity": {
+              "type": "string",
+              "description": "User levelActivity"
+            }
+          }
+        },
+        "AvatarsRequest": {
+          "type": "object",
+          "required": ["avatar"],
+          "properties": {
+            "avatar": {
+              "type": "binary",
+              "description": "New avatar"
+            }
+          }
+        },
+        "VerifyEmailRequest": {
+          "type": "object",
+          "required": ["email"],
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User email",
+              "format": "email"
+            }
+          }
+        },
+        "refreshRequest": {
+          "type": "object",
+          "required": ["refreshToken"],
+          "properties": {
+            "refreshToken": {
+              "type": "string",
+              "description": "User refresh token"
+            }
+          }
+        },
+        "LoginResponse": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "string",
+                  "description": "User access token"
+                },
+                "refreshToken": {
+                  "type": "string",
+                  "description": "User refresh token"
+                }
+              }
+            },
+            "user": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "User name"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "User email"
+                },
+                "avatarUrl": {
+                  "type": "string",
+                  "descroption": "Avatar URL"
+                },
+                "timeSport": {
+                  "type": "number",
+                  "description": "User time sport"
+                },
+                "verify": {
+                  "type": "boolen",
+                  "description": "User verify"
+                },
+                "height": {
+                  "type": "number",
+                  "description": "User height"
+                },
+                "currentWeight": {
+                  "type": "number",
+                  "description": "User currentWeight"
+                },
+                "desiredWeight": {
+                  "type": "number",
+                  "description": "User desiredWeight"
+                },
+                "birthday": {
+                  "type": "Date",
+                  "description": "User birthday"
+                },
+                "blood": {
+                  "type": "number",
+                  "description": "User blood"
+                },
+                "sex": {
+                  "type": "string",
+                  "description": "User sex"
+                },
+                "levelActivity": {
+                  "type": "string",
+                  "description": "User levelActivity"
+                },
+                "bmr": {
+                  "type": "string",
+                  "description": "User bmr"
+                }
+              }
+            }
+          }
+        },
+        "CurrentResponse": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "User name"
+            },
+            "email": {
+              "type": "string",
+              "description": "User email"
+            },
+            "avatarUrl": {
+              "type": "string",
+              "descroption": "Avatar URL"
+            },
+            "timeSport": {
+              "type": "number",
+              "description": "User time sport"
+            },
+            "verify": {
+              "type": "boolen",
+              "description": "User verify"
+            },
+            "height": {
+              "type": "number",
+              "description": "User height"
+            },
+            "currentWeight": {
+              "type": "number",
+              "description": "User currentWeight"
+            },
+            "desiredWeight": {
+              "type": "number",
+              "description": "User desiredWeight"
+            },
+            "birthday": {
+              "type": "Date",
+              "description": "User birthday"
+            },
+            "blood": {
+              "type": "number",
+              "description": "User blood"
+            },
+            "sex": {
+              "type": "string",
+              "description": "User sex"
+            },
+            "levelActivity": {
+              "type": "string",
+              "description": "User levelActivity"
+            },
+            "bmr": {
+              "type": "string",
+              "description": "User bmr"
+            }
+          }
+        },
+        "LogoutResponse": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "descroption": "Message",
+              "example": "logout was successfull"
+            }
+          }
+        },
+        "updateResponse": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "User name"
+            },
+            "email": {
+              "type": "string",
+              "description": "User email"
+            },
+            "avatarUrl": {
+              "type": "string",
+              "descroption": "Avatar URL"
+            },
+            "timeSport": {
+              "type": "number",
+              "description": "User time sport"
+            },
+            "verify": {
+              "type": "boolen",
+              "description": "User verify"
+            },
+            "height": {
+              "type": "number",
+              "description": "User height"
+            },
+            "currentWeight": {
+              "type": "number",
+              "description": "User currentWeight"
+            },
+            "desiredWeight": {
+              "type": "number",
+              "description": "User desiredWeight"
+            },
+            "birthday": {
+              "type": "Date",
+              "description": "User birthday"
+            },
+            "blood": {
+              "type": "number",
+              "description": "User blood"
+            },
+            "sex": {
+              "type": "string",
+              "description": "User sex"
+            },
+            "levelActivity": {
+              "type": "string",
+              "description": "User levelActivity"
+            },
+            "bmr": {
+              "type": "string",
+              "description": "User bmr"
+            }
+          }
+        },
+        "AvatarsResponse": {
+          "type": "object",
+          "properties": {
+            "avatarUrl": {
+              "type": "string",
+              "descroption": "New avatar URL"
+            }
+          }
+        },
+        "VerifyEmailResponse": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "descroption": "Message"
+            }
+          }
+        },
+        "refreshResponse": {
+          "type": "object",
+          "properties": {
+            "accessToken": { "type": "string", "descroption": "access token" },
+            "refreshToken": { "type": "string", "descroption": "refresh token" }
+          }
+        },
+        "ErrorResponse": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "descroption": "Message"
+            }
+          }
+        }
+      },
+      "TotalStatistics": {
+        "type": "object",
+        "properties": {
+            "totalExerciseVideos": {
+                "type": "integer",
+                "description": "Total number of exercise videos in the application"
+            },
+            "totalBurnedCalories": {
+                "type": "number",
+                "description": "Total number of calories burned by all registered users"
+            },
+            "totalUsers": {
+                "type": "integer",
+                "description": "Total number of registered users in the application"
+            },
+            "totalTrainingHours": {
+                "type": "number",
+                "description": "Total number of training hours completed by registered users"
+            },
+            "totalWorkoutsCompleted": {
+                "type": "integer",
+                "description": "Total number of workouts completed by registered users"
+            }
+        }
+    },
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "description": "Use token (or refreshToken for refreshing)"
+        }
+      }
+    }
+  }
+  
+  
