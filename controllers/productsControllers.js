@@ -12,33 +12,32 @@ const getAll = async (req, res) => {
   const skip = (page - 1) * limit;
   const { category, title, blood, recommended } = req.query;
   let filters = {};
-  console.log(typeof blood);
   if (category) {
     filters.category = category;
   }
   if (title) {
     filters.title = { $regex: title, $options: 'i' };
   }
-  const bloodType = parseInt(blood);
-
   if (blood) {
+    const bloodType = parseInt(blood);
     if (bloodType >= 1 && bloodType <= 4) {
       if (recommended) {
         filters[`groupBloodNotAllowed.${bloodType}`] =
           recommended.toLowerCase() === 'true';
       }
-      if (!recommended) {
+      if (!recommended && recommended !== undefined) {
         filters[`groupBloodNotAllowed.${bloodType}`] =
           recommended.toLowerCase() === 'false';
       }
     }
   }
+
   const result = await Products.find(filters, ' ', { skip, limit })
     .lean()
     .exec();
   return res.json(
     result.map(val => {
-      val.recommended = val.groupBloodNotAllowed[bloodType];
+      val.recommended = val.groupBloodNotAllowed[blood];
       delete val.groupBloodNotAllowed;
       return val;
     })
