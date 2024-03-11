@@ -1,9 +1,9 @@
-const controllerWrapper = require("../helpers/controllerWrapper");
-const Products = require("../models/products");
-const ProductsCategories = require("../models/productsCategories");
+const controllerWrapper = require('../helpers/controllerWrapper');
+const Products = require('../models/products');
+const ProductsCategories = require('../models/productsCategories');
 
 const getCategory = async (req, res) => {
-  const result = await ProductsCategories.find();
+  const result = await ProductsCategories.find().sort({ title: 1 });
   return res.json(result);
 };
 
@@ -17,23 +17,28 @@ const getAll = async (req, res) => {
     filters.category = category;
   }
   if (title) {
-    filters.title = { $regex: title, $options: "i" };
+    filters.title = { $regex: title, $options: 'i' };
   }
+  const bloodType = parseInt(blood);
+
   if (blood) {
-    const bloodType = parseInt(blood);
     if (bloodType >= 1 && bloodType <= 4) {
       if (recommended) {
         filters[`groupBloodNotAllowed.${bloodType}`] =
-          recommended.toLowerCase() !== "true";
+          recommended.toLowerCase() === 'true';
+      }
+      if (!recommended) {
+        filters[`groupBloodNotAllowed.${bloodType}`] =
+          recommended.toLowerCase() === 'false';
       }
     }
   }
-  const result = await Products.find(filters, " ", { skip, limit })
+  const result = await Products.find(filters, ' ', { skip, limit })
     .lean()
     .exec();
   return res.json(
-    result.map((val) => {
-      val.recommended = !val.groupBloodNotAllowed[blood];
+    result.map(val => {
+      val.recommended = val.groupBloodNotAllowed[bloodType];
       delete val.groupBloodNotAllowed;
       return val;
     })
