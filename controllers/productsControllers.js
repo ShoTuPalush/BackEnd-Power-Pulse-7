@@ -12,6 +12,7 @@ const getAll = async (req, res) => {
   const skip = (page - 1) * limit;
   const { category, title, blood, recomended } = req.query;
   let filters = {};
+  console.log(typeof blood);
   if (category) {
     filters.category = category;
   }
@@ -23,12 +24,20 @@ const getAll = async (req, res) => {
     if (bloodType >= 1 && bloodType <= 4) {
       if (recomended) {
         filters[`groupBloodNotAllowed.${bloodType}`] =
-          recomended.toLowerCase() === "true";
+          recomended.toLowerCase() !== "true";
       }
     }
   }
-  const result = await Products.find(filters, " ", { skip, limit }).exec();
-  return res.json(result);
+  const result = await Products.find(filters, " ", { skip, limit })
+    .lean()
+    .exec();
+  return res.json(
+    result.map((val) => {
+      val.recomended = !val.groupBloodNotAllowed[blood];
+      delete val.groupBloodNotAllowed;
+      return val;
+    })
+  );
 };
 
 module.exports = {
