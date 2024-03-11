@@ -31,17 +31,18 @@ const getAll = async (req, res) => {
       }
     }
   }
-
+  const maxPage = Math.ceil((await Products.find(filters, ' ')).length / limit);
   const result = await Products.find(filters, ' ', { skip, limit })
     .lean()
     .exec();
-  return res.json(
-    result.map(val => {
+  return res.json({
+    data: result.map(val => {
       val.recommended = val.groupBloodNotAllowed[blood];
       delete val.groupBloodNotAllowed;
       return val;
-    })
-  );
+    }),
+    maxPage,
+  });
 };
 
 module.exports = {

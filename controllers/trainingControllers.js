@@ -1,6 +1,6 @@
-const controllerWrapper = require("../helpers/controllerWrapper");
-const Filter = require("../models/filterts");
-const Exercises = require("../models/exercises");
+const controllerWrapper = require('../helpers/controllerWrapper');
+const Filter = require('../models/filterts');
+const Exercises = require('../models/exercises');
 
 const getCategory = async (req, res) => {
   const result = await Filter.find();
@@ -21,8 +21,12 @@ const getAll = async (req, res) => {
   if (target) {
     filters.target = target;
   }
-  const result = await Exercises.find(filters, " ", { skip, limit }).exec();
-  return res.json(result);
+  const maxPage = Math.ceil(
+    (await Exercises.find(filters, ' ')).length / limit
+  );
+
+  const result = await Exercises.find(filters, ' ', { skip, limit }).exec();
+  return res.json({ data: result, maxPage });
 };
 
 module.exports = {
