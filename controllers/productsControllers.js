@@ -10,7 +10,7 @@ const getCategory = async (req, res) => {
 const getAll = async (req, res) => {
   const { page, limit } = req.query;
   const skip = (page - 1) * limit;
-  const { category, title, blood, recomended } = req.query;
+  const { category, title, blood, recommended } = req.query;
   let filters = {};
   console.log(typeof blood);
   if (category) {
@@ -22,9 +22,9 @@ const getAll = async (req, res) => {
   if (blood) {
     const bloodType = parseInt(blood);
     if (bloodType >= 1 && bloodType <= 4) {
-      if (recomended) {
+      if (recommended) {
         filters[`groupBloodNotAllowed.${bloodType}`] =
-          recomended.toLowerCase() !== "true";
+          recommended.toLowerCase() !== "true";
       }
     }
   }
@@ -33,7 +33,7 @@ const getAll = async (req, res) => {
     .exec();
   return res.json(
     result.map((val) => {
-      val.recomended = !val.groupBloodNotAllowed[blood];
+      val.recommended = !val.groupBloodNotAllowed[blood];
       delete val.groupBloodNotAllowed;
       return val;
     })
