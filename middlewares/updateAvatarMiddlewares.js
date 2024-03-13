@@ -7,8 +7,8 @@ dotenv.config();
 const { cloud_name, api_key, api_secret } = process.env;
 
 cloudinary.config({
-  cloud_name,
-  api_key,
+  cloud_name: 'dxqzi4x9j',
+  api_key: 417617877398435,
   api_secret,
 });
 
