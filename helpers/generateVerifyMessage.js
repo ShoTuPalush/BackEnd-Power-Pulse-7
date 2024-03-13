@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const { FRONTEND_URL } = process.env;
-const url = FRONTEND_URL || 'http://localhost:3000/';
+const url = FRONTEND_URL || 'http://localhost:3000';
 
 const generateVerifyMessage = verificationToken =>
   `<html>
@@ -37,7 +37,7 @@ const generateVerifyMessage = verificationToken =>
         <div class='container'>
           <h2>Hello from Backend, here\`s you verify link 👇️️️️️️</h2>
           <br />
-          <a target="_blank" href="${url}/?verificationToken=${verificationToken}">Click for verify email</a>
+          <a target="_blank" href="${url}/verify/?verificationToken=${verificationToken}">Click for verify email</a>
         </div>
       </body>
     </html>`;
