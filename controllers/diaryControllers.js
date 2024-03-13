@@ -4,7 +4,7 @@ const Exercises = require('../models/exercises');
 const Products = require('../models/products');
 
 const checkUser = async (user, date) => {
-  const newDate = new Date(new Date(date).setHours(2, 0, 0, 0));
+  const newDate = new Date(new Date(Date(date)).toDateString()).setHours(2);
   let foundedDiary;
   const userDiary = await Diaries.findOne({
     owner: user._id,
