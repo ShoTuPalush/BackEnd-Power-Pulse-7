@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const { FRONTEND_URL } = process.env;
-const url = FRONTEND_URL || 'localhost:3000';
+const url = FRONTEND_URL || 'http://localhost:3000/';
 
 const generateVerifyMessage = verificationToken =>
   `<html>
