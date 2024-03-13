@@ -5,7 +5,7 @@ const Products = require('../models/products');
 const { format } = require('date-fns');
 
 const checkUser = async (user, date) => {
-  const newDates = format(new Date().setTime(date), 'MM/dd/yyyy');
+  const newDates = format(new Date().setTime(date.toString()), 'MM/dd/yyyy');
   const newDate = new Date(newDates).setHours(2);
   let foundedDiary;
   const userDiary = await Diaries.findOne({
