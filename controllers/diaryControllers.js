@@ -78,7 +78,7 @@ const delDiaryExercisest = async (req, res) => {
       $inc: { burnedCalories: -calories, doneExercisesTime: -time },
       $pull: { exercises: { _id: exerciseId } },
     },
-    { new: true }
+    { new: true, fields: { exercises: 0, products: 0 } }
   )
     .populate(
       'exercises.exerciseId',
@@ -88,7 +88,7 @@ const delDiaryExercisest = async (req, res) => {
       'products.productId',
       'category weight calories title groupBloodNotAllowed'
     );
-  res.json({ data });
+  res.json({ data, exercises: exerciseId });
 };
 //Видаляємо продукт
 const delDiaryProduct = async (req, res) => {
@@ -102,7 +102,7 @@ const delDiaryProduct = async (req, res) => {
       $inc: { consumedCalories: -calories },
       $pull: { products: { _id: productId } },
     },
-    { new: true }
+    { new: true, fields: { exercises: 0, products: 0 } }
   )
     .populate(
       'exercises.exerciseId',
@@ -113,7 +113,7 @@ const delDiaryProduct = async (req, res) => {
       'category weight calories title groupBloodNotAllowed'
     );
 
-  res.json({ data });
+  res.json({ data, products: productId });
 };
 //Відправляємо на FRONT-END усі прави користувача та продукти
 const getAlldiary = async (req, res) => {
