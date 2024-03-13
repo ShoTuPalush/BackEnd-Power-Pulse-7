@@ -37,7 +37,7 @@ const generateVerifyMessage = verificationToken =>
         <div class='container'>
           <h2>Hello from Backend, here\`s you verify link 👇️️️️️️</h2>
           <br />
-          <a target="_blank" href="${url}/?verificationToken=${verificationToken}">Click for verify email</a>
+          <a target="_blank" href="${url}/profile?verificationToken=${verificationToken}">Click for verify email</a>
         </div>
       </body>
     </html>`;
