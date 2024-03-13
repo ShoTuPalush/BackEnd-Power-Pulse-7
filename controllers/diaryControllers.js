@@ -22,8 +22,6 @@ const checkUser = async (user, date) => {
 };
 
 const addDiaryProduct = async (req, res) => {
-  await Exercises.findOne();
-  await Products.findOne();
   const { user } = req;
   const { date, productId, calories, amount } = req.body;
   const foundedDiary = await checkUser(user, date);
@@ -47,8 +45,6 @@ const addDiaryProduct = async (req, res) => {
 };
 //=============== Додаємо вправи
 const addDiaryExercisest = async (req, res) => {
-  await Exercises.findOne();
-  await Products.findOne();
   const { user } = req;
   const { date, exerciseId, calories, time } = req.body;
   const foundedDiary = await checkUser(user, date);
@@ -72,8 +68,6 @@ const addDiaryExercisest = async (req, res) => {
 };
 //Видаляємо вправи
 const delDiaryExercisest = async (req, res) => {
-  await Exercises.findOne();
-  await Products.findOne();
   const { user } = req;
   const { date, exerciseId, calories, time } = req.body;
   const foundedDiary = await checkUser(user, date);
@@ -98,8 +92,6 @@ const delDiaryExercisest = async (req, res) => {
 };
 //Видаляємо продукт
 const delDiaryProduct = async (req, res) => {
-  await Exercises.findOne();
-  await Products.findOne();
   const { user } = req;
   const { date, productId, calories } = req.body;
   const foundedDiary = await checkUser(user, date);
@@ -125,10 +117,8 @@ const delDiaryProduct = async (req, res) => {
 };
 //Відправляємо на FRONT-END усі прави користувача та продукти
 const getAlldiary = async (req, res) => {
-  await Exercises.findOne();
-  await Products.findOne();
   const { user } = req;
-  const { date } = req.body;
+  const { date } = req.query;
   const foundedDiary = await checkUser(user, date);
 
   const data = await Diaries.findById(foundedDiary)

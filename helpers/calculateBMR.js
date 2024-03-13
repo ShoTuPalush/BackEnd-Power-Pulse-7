@@ -13,7 +13,7 @@ const calculateBMR = ({
   levelActivity,
   sex,
 }) => {
-  const age = new Date().getFullYear() - birthday.getFullYear();
+  const age = new Date().getFullYear() - new Date(birthday).getFullYear();
   if (sex === 'male') {
     const brm =
       (10 * currentWeight + 6.25 * height - 5 * age + 5) *

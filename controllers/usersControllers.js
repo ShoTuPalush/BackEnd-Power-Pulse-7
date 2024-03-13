@@ -26,43 +26,34 @@ const registerUser = async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, salt);
   const verificationToken = v4();
 
-  try {
-    const result = await Users.create({
-      name,
-      email,
-      password: hashedPassword,
-      verificationToken,
-    });
-    // sendEmail({
-    //   to: email,
-    //   subject: 'Please confirm your email',
-    //   html: generateVerifyMessage(verificationToken),
-    // });
-
-    const tokens = await updateTokens(result._id);
-    const user1 = await Users.findByIdAndUpdate(
-      result._id,
-      { token: tokens.accessToken },
-      {
-        password: 0,
-        updatedAt: 0,
-        token: 0,
-        verificationToken: 0,
-      }
-    );
-    res.status(201).json({
-      tokens,
-      user: user1,
-    });
-  } catch (error) {
-    if (error.code === 'EAUTH') {
-      throw HttpError(409, 'Email in use!');
-    }
-    if (error.code === 11000) {
-      throw HttpError(409, 'Email in use!');
-    }
-    throw error;
+  const isUser = await Users.findOne({ email });
+  if (isUser) {
+    throw HttpError(409, 'Email in use!');
   }
+  const result = await Users.create({
+    name,
+    email,
+    password: hashedPassword,
+    verificationToken,
+  });
+  sendEmail({
+    to: email,
+    subject: 'Please confirm your email',
+    html: generateVerifyMessage(verificationToken),
+  });
+  const tokens = await updateTokens(result._id);
+  const user = await Users.findByIdAndUpdate(
+    result._id,
+    { token: tokens.accessToken },
+    {
+      new: true,
+      fields: { password: 0, updatedAt: 0, token: 0, verificationToken: 0 },
+    }
+  );
+  res.status(201).json({
+    tokens,
+    user,
+  });
 };
 
 const loginUser = async (req, res) => {
@@ -76,14 +67,17 @@ const loginUser = async (req, res) => {
     throw HttpError(401, 'Email or password is wrong');
   }
   const tokens = await updateTokens(user._id);
-  await Users.findByIdAndUpdate(user._id, { token: tokens.accessToken });
-  const user1 = await Users.findOne(
-    { email },
-    { password: 0, updatedAt: 0, token: 0, verificationToken: 0 }
+  const result = await Users.findByIdAndUpdate(
+    user._id,
+    { token: tokens.accessToken },
+    {
+      new: true,
+      fields: { password: 0, updatedAt: 0, token: 0, verificationToken: 0 },
+    }
   );
   res.status(200).json({
     tokens,
-    user: user1,
+    user: result,
   });
 };
 
@@ -99,61 +93,49 @@ const logOutUser = async (req, res) => {
 
 const currentUser = async (req, res) => {
   const { user } = req;
-  if (user) {
-    const user1 = await Users.findById(user._id, {
-      password: 0,
-      updatedAt: 0,
-      token: 0,
-      verificationToken: 0,
-    });
-    res.status(200).json(user1);
-  } else {
-    throw HttpError(401, 'Not authorized');
-  }
+  const result = {
+    ...user._doc,
+    password: undefined,
+    updatedAt: undefined,
+    token: undefined,
+    verificationToken: undefined,
+  };
+  res.status(200).json(result);
 };
 
 const updateUser = async (req, res) => {
   const { user } = req;
   const body = req.body;
-  if (user) {
-    const user1 = await Users.findByIdAndUpdate(user._id, body, { new: true });
-    const { height, currentWeight, birthday, sex, levelActivity } = user1;
-    const bmr = calculateBMR({
-      currentWeight,
-      height,
-      birthday,
-      levelActivity,
-      sex,
-    });
-    const user2 = await Users.findByIdAndUpdate(
-      user._id,
-      { bmr },
-      { new: true }
-    );
-    const user3 = await Users.findById(user2._id, {
-      password: 0,
-      updatedAt: 0,
-      token: 0,
-      verificationToken: 0,
-    });
-    res.json(user3);
-  } else {
-    throw HttpError(401, 'Not authorized');
-  }
+
+  const mixUser = { ...user._doc, ...body };
+  const { height, currentWeight, birthday, sex, levelActivity } = mixUser;
+  const bmr = calculateBMR({
+    currentWeight,
+    height,
+    birthday,
+    levelActivity,
+    sex,
+  });
+  const updateUser = await Users.findByIdAndUpdate(
+    user._id,
+    { ...mixUser, bmr },
+    {
+      new: true,
+      fields: { password: 0, updatedAt: 0, token: 0, verificationToken: 0 },
+    }
+  );
+
+  res.json(updateUser);
 };
 
 const updateAvatar = async (req, res) => {
   const { user } = req;
-  if (user) {
-    const user1 = await Users.findByIdAndUpdate(
-      user._id,
-      { avatarUrl: req.file.path },
-      { new: true }
-    );
-    res.status(200).json({ avatarUrl: user1.avatarUrl });
-  } else {
-    throw HttpError(401, 'Not authorized');
-  }
+  const result = await Users.findByIdAndUpdate(
+    user._id,
+    { avatarUrl: req.file.path },
+    { new: true }
+  );
+  res.status(200).json({ avatarUrl: result.avatarUrl });
 };
 
 const refreshToken = async (req, res) => {

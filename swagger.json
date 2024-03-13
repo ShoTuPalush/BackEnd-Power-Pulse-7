@@ -271,7 +271,7 @@
           "description": "Update avatar object",
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "image/png": {
               "schema": {
                 "$ref": "#/components/schemas/AvatarsRequest"
               }
@@ -393,7 +393,7 @@
         }
       }
     },
-    "/api/users/verify/{:verificationToken}": {
+    "/api/users/verify/{verificationToken}": {
       "get": {
         "tags": ["Auth"],
         "summary": "Verify email with a verification token",
@@ -465,7 +465,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DiaryAddProductsRequest"
+                "$ref": "#/components/schemas/DiaryAddExerciseRequest"
               }
             }
           }
@@ -506,7 +506,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DiaryDeleteProductsRequest"
+                "$ref": "#/components/schemas/DiaryAddExerciseRequest"
               }
             }
           }
@@ -547,7 +547,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DiaryAddExerciseRequest"
+                "$ref": "#/components/schemas/DiaryDeleteProductsRequest"
               }
             }
           }
@@ -608,20 +608,18 @@
       }
     },
     "/api/diary/alldaydiary": {
-      "post": {
+      "get": {
         "tags": ["Diary"],
         "summary": "Get added products",
-        "requestBody": {
-          "description": "Delete product by id",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DiaryAllRequest"
-              }
-            }
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "type": "Date",
+            "description": "Date dairy"
           }
-        },
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
@@ -641,18 +639,7 @@
       "get": {
         "tags": ["Exercises"],
         "summary": "List of exercises categories",
-        "parameters": [],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Exercises object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExercisesCategory"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Ok",
@@ -681,18 +668,39 @@
       "get": {
         "tags": ["Exercises"],
         "summary": "List of all filtered exercises",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Exercises object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExercisesAll"
-              }
-            }
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number",
+            "description": "Page for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number",
+            "description": "Limit for pagination"
+          },
+          {
+            "in": "query",
+            "name": "bodyPart",
+            "type": "string",
+            "description": "Body parts for filter"
+          },
+          {
+            "in": "query",
+            "name": "equipment",
+            "type": "string",
+            "description": "Equipment for filter"
+          },
+          {
+            "in": "query",
+            "name": "target",
+            "type": "string",
+            "description": "Target for filter"
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
             "description": "Ok",
@@ -721,18 +729,9 @@
       "get": {
         "tags": ["Products"],
         "summary": "List of products categories",
-        "parameters": [],
+
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Products object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductsCategory"
-              }
-            }
-          }
-        },
+
         "responses": {
           "200": {
             "description": "Ok",
@@ -761,18 +760,45 @@
       "get": {
         "tags": ["Products"],
         "summary": "List of all filtered products",
-        "parameters": [],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Products object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductsAll"
-              }
-            }
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number",
+            "description": "Page for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number",
+            "description": "Limit for pagination"
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "type": "string",
+            "description": "Body parts for filter"
+          },
+          {
+            "in": "query",
+            "name": "blood",
+            "type": "number",
+            "description": "Equipment for filter"
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "type": "string",
+            "description": "Target for filter"
+          },
+          {
+            "in": "query",
+            "name": "recomended",
+            "type": "string",
+            "description": "Target for filter"
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Ok",
@@ -945,14 +971,9 @@
         }
       },
       "AvatarsRequest": {
-        "type": "object",
-        "required": ["avatar"],
-        "properties": {
-          "avatar": {
-            "type": "binary",
-            "description": "New avatar"
-          }
-        }
+        "type": "string",
+        "format": "binary",
+        "required": ["avatar"]
       },
       "VerifyEmailRequest": {
         "type": "object",
@@ -1165,13 +1186,28 @@
             "description": "User sex"
           },
           "levelActivity": {
-            "type": "string",
+            "type": "number",
             "description": "User levelActivity"
           },
           "bmr": {
-            "type": "string",
+            "type": "number",
             "description": "User bmr"
           }
+        },
+        "example": {
+          "name": "user",
+          "email": "user@example.net",
+          "avatarUrl": "string",
+          "timeSport": 110,
+          "verify": false,
+          "height": 165,
+          "currentWeight": 55,
+          "desiredWeight": 60,
+          "birthday": "2001-04-03",
+          "blood": 2,
+          "sex": "female",
+          "levelActivity": 4,
+          "bmr": 2100
         }
       },
       "AvatarsResponse": {
@@ -1423,6 +1459,12 @@
             "description": "Number of grams",
             "example": "100"
           }
+        },
+        "example": {
+          "productId": "5d51694902b2373622ff5b6f",
+          "date": "2024-03-12",
+          "amount": 10,
+          "calories": 100
         }
       },
       "DiaryAddExerciseRequest": {
@@ -1446,6 +1488,12 @@
             "type": "number",
             "description": "Exercise time"
           }
+        },
+        "example": {
+          "exerciseId": "64f2458d6f67bc34bae4f912",
+          "date": "2024-03-12",
+          "time": 10,
+          "calories": 100
         }
       },
       "DiaryGetProductsRequest": {
@@ -1498,6 +1546,15 @@
             "type": "string",
             "description": "Add date",
             "example": "dd/mm/yyyy"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "descroption": "Message"
           }
         }
       }

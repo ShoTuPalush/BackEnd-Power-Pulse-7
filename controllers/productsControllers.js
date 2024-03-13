@@ -12,12 +12,8 @@ const getAll = async (req, res) => {
   const skip = (page - 1) * limit;
   const { category, title, blood, recommended } = req.query;
   let filters = {};
-  if (category) {
-    filters.category = category;
-  }
-  if (title) {
-    filters.title = { $regex: title, $options: 'i' };
-  }
+  category && (filters.category = category);
+  title && (filters.title = { $regex: title, $options: 'i' });
   if (blood) {
     const bloodType = parseInt(blood);
     if (bloodType >= 1 && bloodType <= 4) {

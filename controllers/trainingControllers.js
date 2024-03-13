@@ -12,19 +12,13 @@ const getAll = async (req, res) => {
   const skip = (page - 1) * limit;
   const { bodyPart, equipment, target } = req.query;
   let filters = {};
-  if (bodyPart) {
-    filters.bodyPart = bodyPart;
-  }
-  if (equipment) {
-    filters.equipment = equipment;
-  }
-  if (target) {
-    filters.target = target;
-  }
+  bodyPart && (filters.bodyPart = bodyPart);
+  equipment && (filters.equipment = equipment);
+  target && (filters.target = target);
+
   const maxPage = Math.ceil(
     (await Exercises.find(filters, ' ')).length / limit
   );
-
   const result = await Exercises.find(filters, ' ', { skip, limit }).exec();
   return res.json({ data: result, maxPage });
 };

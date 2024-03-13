@@ -1,42 +1,40 @@
-const express = require("express");
-const ctrl = require("../controllers/diaryControllers");
-const authMiddlewares = require("../middlewares/authMiddlewares");
-const validateBody = require("../helpers/validateBody");
+const express = require('express');
+const ctrl = require('../controllers/diaryControllers');
+const authMiddlewares = require('../middlewares/authMiddlewares');
+const validateBody = require('../helpers/validateBody');
 const {
   productSchema,
   exerciseSchema,
-  AlldayShema,
-} = require("../schemas/productShema");
+} = require('../schemas/productShema');
 
 const diaryRoutes = express.Router();
 
 diaryRoutes.post(
-  "/addPoduct",
+  '/addPoduct',
   authMiddlewares,
   validateBody(productSchema),
   ctrl.addDiaryProduct
 );
 diaryRoutes.post(
-  "/addexercises",
+  '/addexercises',
   authMiddlewares,
   validateBody(exerciseSchema),
   ctrl.addDiaryExercisest
 );
 diaryRoutes.delete(
-  "/deldiaryexercisest",
+  '/deldiaryexercisest',
   authMiddlewares,
   validateBody(exerciseSchema),
   ctrl.delDiaryExercisest
 );
-diaryRoutes.post(
-  "/alldaydiary",
+diaryRoutes.get(
+  '/alldaydiary',
   authMiddlewares,
-  validateBody(AlldayShema),
   ctrl.getAlldiary
 );
 
 diaryRoutes.delete(
-  "/deldiaryproduct",
+  '/deldiaryproduct',
   authMiddlewares,
   validateBody(productSchema),
   ctrl.delDiaryProduct
