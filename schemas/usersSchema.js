@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
+const emailRegex = /^[a-z0-9._%+-]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
 
 const name = Joi.string().required().messages({
   'string.base': 'The name must be a string.',
